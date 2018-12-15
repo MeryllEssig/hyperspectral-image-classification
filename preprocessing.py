@@ -111,7 +111,7 @@ def dimensionalityReduction(X, numComponents=75, standardize=True):
     newX = np.reshape(X, (-1, X.shape[2]))
     pca = PCA(n_components=numComponents, whiten=True)
     newX = pca.fit_transform(newX)
-    newX = np.reshape(newX, (X.shape[0],X.shape[1], numComponents))
+    newX = np.reshape(newX, (X.shape[0], X.shape[1], numComponents))
     return newX, pca
 
 def BoostDataset(X, y, n_samples=0):
@@ -169,7 +169,7 @@ def oversampleWeakClasses(X, y):
     return newX, newY
 
 def shuffleTrainTest(train, test):
-    np.random.seed(42)
+    np.random.seed(41)
     for i in range(train.shape[0]):
         for j in range(train.shape[1]):
             if train[i, j] != 0 or test[i, j] != 0 : #eviter calcul inutiles
