@@ -101,6 +101,19 @@ def patch_1dim_split(X, train_data, test_data, PATCH_SIZE):
     return X_train_patch, X_test_patch, y_train_patch, y_test_patch
 
 
+# Split deletes zero values in both X and y and merge the first 2 dimensions
+def split(X, train_data, test_data):
+    X_temp = np.reshape(X, (X.shape[0] * X.shape[1], X.shape[2]))
+    y_train_temp = np.reshape(train_data, (train_data.shape[0]* train_data.shape[1]));
+    y_test_temp = np.reshape(test_data, (test_data.shape[0] * test_data.shape[1]));
+    
+    X_train = X_temp[y_train_temp > 0,:];
+    y_train_temp = y_train_temp[y_train_temp > 0];
+    X_test = X_temp[y_test_temp > 0];
+    y_test_temp = y_test_temp[y_test_temp > 0];
+    
+    return X_train, X_test, y_train_temp, y_test_temp
+
 def dimensionalityReduction(X, numComponents=75, standardize=True):
     if standardize:
         newX = np.reshape(X, (-1, X.shape[2]))

@@ -16,6 +16,8 @@ from keras import backend as K
 K.set_image_dim_ordering('th')
 K.set_image_data_format('channels_last')
 
+from sklearn.metrics import classification_report, f1_score
+
 def sequential_cnn_model(input_shape, C1, numPCAcomponents, num_classes=9, optimizer='adam'): 
     model = Sequential()
     
@@ -33,6 +35,14 @@ def sequential_cnn_model(input_shape, C1, numPCAcomponents, num_classes=9, optim
     sgd = SGD(lr=0.001, decay=1e-6, momentum=0.9, nesterov=True)
     model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.Adam(lr=0.0001), metrics=['accuracy'])
     return model
+
+def train_test_model(model, X_train, y_train, X_test, y_test, target_names):
+    model.fit(X_train, y_train)
+    y_pred_train = model.predict(X_train)
+    print("Model f1_score on train data/labels:", f1_score(y_train, y_pred_train, average="weighted"), "\n")
+    y_pred = model.predict(X_test)
+    print("Model score on test data/labels:\n" + classification_report(y_test, y_pred, target_names=target_names))
+
 
 #model = KerasClassifier(build_fn=create_model, verbose=0)
 # sequential_cnn_model = sequential_cnn_model(input_shape)
